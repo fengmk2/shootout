@@ -1,14 +1,18 @@
-PREL=taskset -c 1
-PREJ=taskset -c 1
-PREP=taskset -c 1
+# PREL=taskset -c 1
+# PREJ=taskset -c 1
+# PREP=taskset -c 1
+# PREN=taskset -c 1
 
-#LUA=${PREL} luajit-2.0.0-beta10
+# LUA=${PREL} /usr/local/Cellar/luajit/2.0.0-beta9/bin/luajit
 LUA=${PREL} lua
 JAVAC=javac
 JAVA=${PREJ} java -server -XX:+TieredCompilation -XX:+AggressiveOpts
 PHP=${PREP} php
+NODE=${PREN} node
 
 lua: fasta nbody spectralnorm binarytrees mandelbrot fannkuchredux
+
+node: fasta-node nbody-node spectralnorm-node binarytrees-node mandelbrot-node fannkuchredux-node
 
 java: fasta-java nbody-java spectralnorm-java binarytrees-java mandelbrot-java fannkuchredux-java
 
@@ -88,6 +92,30 @@ mandelbrot-php:
 fannkuchredux-php:
 	@echo ==== $@ ====
 	@time -p ${PHP} fannkuchredux.php 11 > /dev/null
+
+fasta-node:
+	@echo ==== $@ ====
+	@time -p ${NODE} fasta.js 2500000 > /dev/null
+
+nbody-node:
+	@echo ==== $@ ====
+	@time -p ${NODE} nbody.js 5000000 > /dev/null
+
+spectralnorm-node:
+	@echo ==== $@ ====
+	@time -p ${NODE} spectralnorm.js 3000 > /dev/null
+
+binarytrees-node:
+	@echo ==== $@ ====
+	@time -p ${NODE} binarytrees.js 16 > /dev/null
+
+mandelbrot-node:
+	@echo ==== $@ ====
+	@time -p ${NODE} mandelbrot.js 4000 > /dev/null
+
+fannkuchredux-node:
+	@echo ==== $@ ====
+	@time -p ${NODE} fannkuchredux.js 11 > /dev/null
 
 clean:
 	-@rm -f *.class
